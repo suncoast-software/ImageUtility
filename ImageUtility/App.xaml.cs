@@ -1,4 +1,6 @@
-﻿using ImageUtility.ViewModels;
+﻿using ImageUtility.Interfaces;
+using ImageUtility.Navigation;
+using ImageUtility.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -13,16 +15,17 @@ namespace ImageUtility
 {
     public partial class App : Application
     {
-        private readonly IHost _host;
+        internal readonly IHost _host;
 
         public App()
         {
             _host = Host.CreateDefaultBuilder().ConfigureServices(services =>
             {
                 services.AddSingleton<AppViewModel>();
+                services.AddSingleton<INavigator, Navigator>();
                 services.AddSingleton<MainWindow>(s => new MainWindow()
                 {
-                    DataContext = s.GetService<AppViewModel>()
+                    DataContext = s.GetRequiredService<AppViewModel>()
                 }); ;
             }).Build();
         }

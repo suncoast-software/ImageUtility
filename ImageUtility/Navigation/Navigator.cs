@@ -12,8 +12,6 @@ namespace ImageUtility.Navigation
     {
         public event Action? CurrentViewModelChanged;
 
-        public event Action? SystemMessageChanged;
-
         private BaseViewModel? _currentViewModel;
         public BaseViewModel? CurrentViewModel
         {

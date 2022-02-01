@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ImageUtility.Interfaces
 {
-    internal class INavigator
+    internal interface INavigator
     {
         public event Action? CurrentViewModelChanged;
 

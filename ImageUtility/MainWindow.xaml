@@ -123,11 +123,14 @@
                             Height="80"
                             Width="90"
                             Background="{x:Null}"
-                            BorderBrush="{x:Null}">
+                            BorderBrush="{x:Null}"
+                            Command="{Binding NavigateSettingsCommand}">
                         <md:PackIcon Kind="Settings"
                                      Foreground="{StaticResource PrimaryAccentBrush}"
                                      Height="50"
-                                     Width="60"/>
+                                     Width="60"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"/>
                     </Button>
                 </Grid>
                 <!-- END NAVBAR -->
@@ -136,7 +139,9 @@
                 <ContentControl Grid.Column="2"
                                 Grid.Row="1"
                                 HorizontalAlignment="Left"
-                                VerticalAlignment="Top">
+                                VerticalAlignment="Top"
+                                Margin="20"
+                                Content="{Binding Path=CurrentViewModel}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
                             <v:SettingsView/>
