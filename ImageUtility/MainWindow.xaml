@@ -73,7 +73,7 @@
                         </StackPanel>
                     </Grid>
                 </Border>
-                <!-- #region END HEADER -->
+                <!-- #endregion END HEADER -->
                 
                 <!--#region  NAVBAR -->
                 <Grid Grid.Column="1"
@@ -95,7 +95,7 @@
                             Background="{x:Null}"
                             BorderBrush="{x:Null}">
                         <md:PackIcon Kind="FolderOpen"
-                                     Foreground="{StaticResource PrimaryAccentBrush}"
+                                     Foreground="{StaticResource PrimaryDarkBrush400}"
                                      Height="50"
                                      Width="60"/>
                     </Button>
@@ -105,7 +105,7 @@
                             Background="{x:Null}"
                             BorderBrush="{x:Null}">
                         <md:PackIcon Kind="FolderOpen"
-                                     Foreground="{StaticResource PrimaryAccentBrush}"
+                                     Foreground="{StaticResource PrimaryDarkBrush400}"
                                      Height="50"
                                      Width="60"/>
                     </Button>
@@ -115,7 +115,7 @@
                             Background="{x:Null}"
                             BorderBrush="{x:Null}">
                         <md:PackIcon Kind="FolderOpen"
-                                     Foreground="{StaticResource PrimaryAccentBrush}"
+                                     Foreground="{StaticResource PrimaryDarkBrush400}"
                                      Height="50"
                                      Width="60"/>
                     </Button>
@@ -126,14 +126,14 @@
                             BorderBrush="{x:Null}"
                             Command="{Binding NavigateSettingsCommand}">
                         <md:PackIcon Kind="Settings"
-                                     Foreground="{StaticResource PrimaryAccentBrush}"
+                                     Foreground="{StaticResource PrimaryDarkBrush300}"
                                      Height="50"
                                      Width="60"
                                      HorizontalAlignment="Center"
                                      VerticalAlignment="Center"/>
                     </Button>
                 </Grid>
-                <!-- END NAVBAR -->
+                <!--#endregion END NAVBAR -->
                 
                 <!--#region  MAIN CONTENT -->
                 <ContentControl Grid.Column="2"
@@ -148,7 +148,25 @@
                         </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>
-                <!-- END MAIN CONTENT -->
+                <!--#endregion END MAIN CONTENT -->
+                
+                <!--#region  FOOTER -->
+                <StackPanel Grid.Row="2"
+                            Grid.Column="2"
+                            Orientation="Horizontal">
+                    <TextBlock Text="Status"
+                               Foreground="{StaticResource PrimaryDarkBrush400}"
+                               FontSize="18"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"/>
+                    <Border CornerRadius="50"
+                            Background="{StaticResource PrimaryAccentBrush}"
+                            Width="20"
+                            Height="20"
+                            Margin="20 0"/>
+
+                </StackPanel>
+                <!--#endregion FOOTER -->
             </Grid>
         </Border>
     </Grid>
