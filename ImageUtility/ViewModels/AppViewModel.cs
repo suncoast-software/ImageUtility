@@ -1,11 +1,8 @@
 ﻿using ImageUtility.Interfaces;
 using ImageUtility.Utility.Commands;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace ImageUtility.ViewModels
 {
@@ -15,6 +12,7 @@ namespace ImageUtility.ViewModels
         public BaseViewModel? CurrentViewModel => _navigator.CurrentViewModel;
         public ICommand ExitAppCommand { get; set; }
         public ICommand NavigateSettingsCommand { get; }
+        public ICommand NavigateResizeCommand { get; }
 
         public AppViewModel(INavigator navigator)
         {
@@ -22,6 +20,7 @@ namespace ImageUtility.ViewModels
             _navigator.CurrentViewModelChanged += OnCurrentViewModelChanged;
             ExitAppCommand = new RelayCommand(ExitApp);
             NavigateSettingsCommand = new NavigateCommand<SettingsViewModel>(_navigator, () => new SettingsViewModel());
+            NavigateResizeCommand = new NavigateCommand<ResizeViewModel>(_navigator, () => new ResizeViewModel());
         }
 
         private void OnCurrentViewModelChanged()
@@ -31,7 +30,7 @@ namespace ImageUtility.ViewModels
 
         private void ExitApp()
         {
-            Environment.Exit(0);
+            App.Current.Shutdown();
         }
     }
 }

@@ -40,7 +40,11 @@
                         Grid.Row="0"
                         Grid.ColumnSpan="4"
                         CornerRadius="16 16 0 0"
-                        Background="{StaticResource PrimaryDarkBrush300}">
+                        Background="{StaticResource PrimaryDarkBrush300}"
+                        MouseDown="Border_MouseDown">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="2" ShadowDepth="2" Direction="270" Color="#000" Opacity=".4"/>
+                    </Border.Effect>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -51,9 +55,17 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    FontSize="30"
-                                   Foreground="{DynamicResource PrimaryAccentBrush}"
+                                   Foreground="{StaticResource PrimaryAccentBrush}"
                                    FontWeight="Bold"
-                                   Text="Image Utility "/>
+                                   Text="Image Utility ">
+                            <TextBlock.Effect>
+                                <DropShadowEffect ShadowDepth="4"
+                                                  BlurRadius="2"
+                                                  Direction="270"
+                                                  Color="#000"
+                                                  Opacity=".4"/>
+                            </TextBlock.Effect>
+                        </TextBlock>
                         <StackPanel Grid.Column="2"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
@@ -68,7 +80,8 @@
                                 <md:PackIcon Kind="Power"
                                              Width="40"
                                              Height="40"
-                                             Foreground="{StaticResource PrimaryAccentBrush}"/>
+                                             Foreground="{StaticResource  PrimaryDarkBrush100}">
+                                </md:PackIcon>
                             </Button>
                         </StackPanel>
                     </Grid>
@@ -93,11 +106,19 @@
                             Height="80"
                             Width="90"
                             Background="{x:Null}"
-                            BorderBrush="{x:Null}">
-                        <md:PackIcon Kind="FolderOpen"
+                            BorderBrush="{x:Null}"
+                            Command="{Binding NavigateResizeCommand}">
+                        <md:PackIcon Kind="Home"
                                      Foreground="{StaticResource PrimaryDarkBrush400}"
                                      Height="50"
                                      Width="60"/>
+                        <Button.Effect>
+                            <DropShadowEffect ShadowDepth="4"
+                                                  BlurRadius="2"
+                                                  Direction="270"
+                                                  Color="#000"
+                                                  Opacity=".4"/>
+                        </Button.Effect>
                     </Button>
                     <Button Grid.Row="1"
                             Height="80"
@@ -108,16 +129,30 @@
                                      Foreground="{StaticResource PrimaryDarkBrush400}"
                                      Height="50"
                                      Width="60"/>
+                        <Button.Effect>
+                            <DropShadowEffect ShadowDepth="4"
+                                                  BlurRadius="2"
+                                                  Direction="270"
+                                                  Color="#000"
+                                                  Opacity=".4"/>
+                        </Button.Effect>
                     </Button>
                     <Button Grid.Row="2"
                             Height="80"
                             Width="90"
                             Background="{x:Null}"
                             BorderBrush="{x:Null}">
-                        <md:PackIcon Kind="FolderOpen"
+                        <md:PackIcon Kind="FolderSearch"
                                      Foreground="{StaticResource PrimaryDarkBrush400}"
                                      Height="50"
                                      Width="60"/>
+                        <Button.Effect>
+                            <DropShadowEffect ShadowDepth="4"
+                                                  BlurRadius="2"
+                                                  Direction="270"
+                                                  Color="#000"
+                                                  Opacity=".4"/>
+                        </Button.Effect>
                     </Button>
                     <Button Grid.Row="6"
                             Height="80"
@@ -131,6 +166,13 @@
                                      Width="60"
                                      HorizontalAlignment="Center"
                                      VerticalAlignment="Center"/>
+                        <Button.Effect>
+                            <DropShadowEffect ShadowDepth="4"
+                                                  BlurRadius="2"
+                                                  Direction="270"
+                                                  Color="#000"
+                                                  Opacity=".4"/>
+                        </Button.Effect>
                     </Button>
                 </Grid>
                 <!--#endregion END NAVBAR -->
@@ -146,23 +188,28 @@
                         <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
                             <v:SettingsView/>
                         </DataTemplate>
+                        <DataTemplate DataType="{x:Type vm:ResizeViewModel}">
+                            <v:ResizeImageView/>
+                        </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>
                 <!--#endregion END MAIN CONTENT -->
                 
                 <!--#region  FOOTER -->
                 <StackPanel Grid.Row="2"
-                            Grid.Column="2"
-                            Orientation="Horizontal">
-                    <TextBlock Text="Status"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
+                            Orientation="Horizontal"
+                            Margin="20 0">
+                    <TextBlock Text="RIPCORE READY"
                                Foreground="{StaticResource PrimaryDarkBrush400}"
-                               FontSize="18"
+                               FontSize="16"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center"/>
                     <Border CornerRadius="50"
                             Background="{StaticResource PrimaryAccentBrush}"
-                            Width="20"
-                            Height="20"
+                            Width="15"
+                            Height="15"
                             Margin="20 0"/>
 
                 </StackPanel>
