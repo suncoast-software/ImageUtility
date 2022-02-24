@@ -13,19 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ImageUtility
+namespace ImageUtility.Views
 {
-    public partial class MainWindow : Window
+    /// <summary>
+    /// Interaction logic for ResizeImageView.xaml
+    /// </summary>
+    public partial class ResizeImageView : UserControl
     {
-        public MainWindow()
+        public ResizeImageView()
         {
             InitializeComponent();
-        }
-
-        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
-                DragMove();
         }
     }
 }
