@@ -60,11 +60,15 @@
                     <StackPanel Orientation="Horizontal"
                             Margin="0 10">
                         <TextBox Width="300"
-                         Height="40"
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                         md:HintAssist.Hint="Source Directory"
-                         Foreground="{StaticResource PrimaryAccentBrush}"
-                             Margin="10 0">
+                                 Height="40"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                 md:HintAssist.Hint="Source Directory"
+                                 Foreground="{StaticResource PrimaryAccentBrush}"
+                                 Margin="10 0"
+                                 ToolTip="Source Images Directory"
+                                 ToolTipService.HasDropShadow="True"
+                                 ToolTipService.InitialShowDelay="500"
+                                 ToolTipService.Placement="Top">
 
                         </TextBox>
                         <Button Width="60"
@@ -88,11 +92,15 @@
                     <StackPanel Orientation="Horizontal"
                             Margin="0 10">
                         <TextBox Width="300"
-                         Height="40"
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                         md:HintAssist.Hint="Target Directory"
-                         Foreground="{StaticResource PrimaryAccentBrush}"
-                             Margin="10 0">
+                                 Height="40"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                 md:HintAssist.Hint="Target Directory"
+                                 Foreground="{StaticResource PrimaryAccentBrush}"
+                                 Margin="10 0"
+                                 ToolTip="Directory to save the resized images"
+                                 ToolTipService.HasDropShadow="True"
+                                 ToolTipService.InitialShowDelay="500"
+                                 ToolTipService.Placement="Top">
 
                         </TextBox>
                         <Button Width="60"
@@ -119,7 +127,7 @@
                             <TextBlock Text="Height"
                                    Foreground="{StaticResource PrimaryAccentBrush}"
                                    Opacity=".8"
-                                   FontSize="14"
+                                   FontSize="12"
                                    Margin="4 0 0 4"/>
                             <xctk:IntegerUpDown x:Name="upDownHeight"
                                         Width="100"
@@ -132,7 +140,7 @@
                             <TextBlock Text="Width"
                                    Foreground="{StaticResource PrimaryAccentBrush}"
                                    Opacity=".8"
-                                   FontSize="14"
+                                   FontSize="12"
                                    Margin="4 0 0 4"/>
                             <xctk:IntegerUpDown x:Name="upDownWidth"
                                         Width="100"
@@ -146,7 +154,57 @@
                               Foreground="{StaticResource PrimaryAccentBrush}"
                               Margin="10 6 0 0"/>
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Right"
+                                Margin="0 10 40 0">
+                        <Button Height="60" Width="80"
+                                BorderBrush="Transparent"
+                                Background="Transparent"
+                                Margin="10 0"
+                                ToolTip="Clear Inputs"
+                                ToolTipService.HasDropShadow="True"
+                                ToolTipService.InitialShowDelay="500"
+                                ToolTipService.Placement="Top">
+                            <Button.Effect>
+                                <DropShadowEffect BlurRadius="8"
+                                                  ShadowDepth="3"
+                                                  Direction="270"
+                                                  Color="#000"
+                                                  Opacity=".8"/>
+                            </Button.Effect>
+                            <md:PackIcon Kind="ClearBox"
+                                         Height="50"
+                                         Width="50"
+                                         Foreground="{StaticResource PrimaryDarkBrush400}">
 
+                            </md:PackIcon>
+
+                        </Button>
+                        <Button Height="60" Width="80"
+                                BorderBrush="Transparent"
+                                Background="Transparent"
+                                Margin="10 0"
+                                ToolTip="Start Resize"
+                                ToolTipService.HasDropShadow="True"
+                                ToolTipService.InitialShowDelay="500"
+                                ToolTipService.Placement="Top">
+                            <Button.Effect>
+                                <DropShadowEffect BlurRadius="8"
+                                                  ShadowDepth="3"
+                                                  Direction="270"
+                                                  Color="#000"
+                                                  Opacity=".8"/>
+                            </Button.Effect>
+                            <md:PackIcon Kind="Resize"
+                                         Height="50"
+                                         Width="50"
+                                         Foreground="{StaticResource PrimaryDarkBrush400}">
+                                
+                            </md:PackIcon>
+                            
+                        </Button>
+
+                    </StackPanel>
 
                 </StackPanel>
             </Border>
@@ -158,18 +216,18 @@
                           VerticalScrollBarVisibility="Auto"
                           Margin="20">
                 <TextBlock Text="Images Here"
-                           Foreground="{StaticResource PrimaryAccentBrush}"
+                           Foreground="{StaticResource PrimaryDarkBrush400}"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            FontSize="44"
-                           Opacity=".5">
+                           Opacity=".4">
                      <TextBlock.Effect>
-                                <DropShadowEffect BlurRadius="4"
-                                                  ShadowDepth="4"
-                                                  Direction="270"
-                                                  Color="#000"
-                                                  Opacity=".8"/>
-                            </TextBlock.Effect>
+                        <DropShadowEffect BlurRadius="4"
+                                            ShadowDepth="4"
+                                            Direction="270"
+                                            Color="#000"
+                                            Opacity=".4"/>
+                     </TextBlock.Effect>
                 </TextBlock>
 
             </ScrollViewer>
