@@ -108,7 +108,7 @@
                             Background="{x:Null}"
                             BorderBrush="{x:Null}"
                             Command="{Binding NavigateResizeCommand}">
-                        <md:PackIcon Kind="Home"
+                        <md:PackIcon Kind="Resize"
                                      Foreground="{StaticResource PrimaryDarkBrush400}"
                                      Height="50"
                                      Width="60"/>
@@ -176,8 +176,17 @@
                     </Button>
                 </Grid>
                 <!--#endregion END NAVBAR -->
-                
-                <!--#region  MAIN CONTENT -->
+
+                <TextBlock Grid.Column="2" 
+                          Grid.Row="1"
+                          Text="IMAGE UTILITY"
+                          FontSize="80"
+                          FontWeight="Bold"
+                          Foreground="{StaticResource PrimaryDarkBrush500}"
+                          Opacity=".15"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
+                <!--#region  MAIN CONTENT -->           
                 <ContentControl Grid.Column="2"
                                 Grid.Row="1"
                                 HorizontalAlignment="Left"

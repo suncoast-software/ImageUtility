@@ -1,5 +1,6 @@
 ﻿using ImageUtility.Interfaces;
 using ImageUtility.Navigation;
+using ImageUtility.Services;
 using ImageUtility.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,6 +18,7 @@ namespace ImageUtility
             {
                 services.AddSingleton<AppViewModel>();
                 services.AddSingleton<INavigator, Navigator>();
+                services.AddSingleton<IMessageService, MessageService>();
                 services.AddSingleton<MainWindow>(s => new MainWindow()
                 {
                     DataContext = s.GetRequiredService<AppViewModel>()
