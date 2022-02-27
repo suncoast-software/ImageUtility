@@ -4,7 +4,10 @@ using Ookii.Dialogs.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Globalization;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ImageUtility.ViewModels
@@ -16,6 +19,8 @@ namespace ImageUtility.ViewModels
         public ICommand TargetDirCommand { get; set;}
         public ICommand ResizeCommand { get; set;}
         public ICommand ClearInputCommand { get; set; }
+
+
 
         private ObservableCollection<string> _imgList;
         public ObservableCollection<string> ImgList
@@ -31,11 +36,25 @@ namespace ImageUtility.ViewModels
             set => OnPropertyChanged(ref _canResize, value);
         }
 
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set => OnPropertyChanged(ref _isLoading, value);
+        }
+
         private string _sourceDir;
         public string SourceDir
         {
             get => _sourceDir;
             set => OnPropertyChanged(ref _sourceDir, value);
+        }
+
+        private string _targetDir;
+        public string TargetDir
+        {
+            get => _targetDir;
+            set => OnPropertyChanged(ref _targetDir, value);
         }
 
         public ResizeViewModel(IMessageService messageService)
@@ -46,14 +65,30 @@ namespace ImageUtility.ViewModels
             
         }
 
+
         private void SetTargetDir()
         {
-            throw new NotImplementedException();
+            var OFD = new VistaFolderBrowserDialog();
+            if (!VistaFolderBrowserDialog.IsVistaFolderDialogSupported)
+                return;
+
+            if ((bool)OFD.ShowDialog() == true)
+            {
+                TargetDir = OFD.SelectedPath;
+            }
         }
 
         private void SetSourceDir()
-        {
-            ImgList = new ObservableCollection<string>();
+        {  
+            Task.Run(async () =>
+            {
+                IsLoading = true;
+                await Task.WhenAll(LoadImages()).ContinueWith(t => IsLoading = false);
+            });
+        }
+
+        private async Task LoadImages()
+        { 
             var OFD = new VistaFolderBrowserDialog();
             if (!VistaFolderBrowserDialog.IsVistaFolderDialogSupported)
                 return;
@@ -63,12 +98,16 @@ namespace ImageUtility.ViewModels
                 var selectedPath = OFD.SelectedPath;
                 SourceDir = selectedPath;
 
-                var files = Directory.GetFiles(selectedPath);
-                foreach (var file in files)
+                ImgList = new ObservableCollection<string>();
+                var files = Directory.GetFiles(SourceDir);
+                //int i = 0;
+                
+                for (int i = 0; i <= files.Length - 1; i++)
                 {
-                    ImgList.Add(file);
-                } 
+                    ImgList.Add(files[i]);
+                }
             }
+           
         }
     }
 }

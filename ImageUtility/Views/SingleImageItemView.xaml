@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="ImageUtility.Views.SingleImageItemView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ImageUtility.Views"
+             mc:Ignorable="d" 
+             Height="160" Width="160">
+
+    <Border CornerRadius="18"
+            Height="140"
+            Width="140"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            BorderBrush="{StaticResource PrimaryDarkBrush400}"
+            BorderThickness="0 4 0 2"
+            Background="{StaticResource PrimaryDarkBrush200}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="10"/>
+            </Grid.RowDefinitions>
+            <Image Grid.Column="1"
+                   Grid.Row="1"/>
+            <Grid Grid.Column="1"
+                        Grid.Row="2">
+                <TextBlock Text="Height"
+                           Margin="4"
+                           HorizontalAlignment="Left"/>
+                <TextBlock Text="Width"
+                           Margin="4"
+                           HorizontalAlignment="Right"/>
+            </Grid>
+        </Grid>
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="8"
+                              ShadowDepth="4"
+                              Direction="270"
+                              Color="#000"
+                              Opacity=".6"/>
+        </Border.Effect>
+       
+    </Border>
+            
+</UserControl>
