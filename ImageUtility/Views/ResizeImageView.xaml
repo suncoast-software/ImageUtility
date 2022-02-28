@@ -11,14 +11,17 @@
     Height="700"
     Width="1200"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
+    </UserControl.Resources>
     <Border Background="{StaticResource Primary100ToSecondary200GradientBrush}"
             CornerRadius="18"
             Height="690"
             Width="1190"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            BorderBrush="{StaticResource PrimaryAccentBrush}"
-            BorderThickness="0 6 0 2">
+            BorderBrush="{StaticResource PrimaryDarkBrush500}"
+            BorderThickness="1">
         <Border.Effect>
             <DropShadowEffect BlurRadius="8"
                               ShadowDepth="6"
@@ -29,7 +32,7 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="10"/>
-                <ColumnDefinition Width="400"/>
+                <ColumnDefinition Width="420"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="10"/>
             </Grid.ColumnDefinitions>
@@ -42,12 +45,12 @@
             <!--#region  RESIZE CONTROLS -->
             <Border Grid.Column="1"
                     Grid.Row="1"
-                    Height="300"
+                    Height="380"
                     VerticalAlignment="Top"
-                    BorderBrush="{StaticResource PrimaryAccentBrush}"
+                    BorderBrush="{StaticResource PrimaryDarkBrush500}"
                     BorderThickness=".5"
                     CornerRadius="10"
-                    Margin="20 20 0 0">
+                    Margin="20 10">
 
                 <StackPanel Orientation="Vertical"
                         Margin="0 20">
@@ -106,7 +109,7 @@
                                  ToolTipService.HasDropShadow="True"
                                  ToolTipService.InitialShowDelay="500"
                                  ToolTipService.Placement="Top"
-                                 Text="{Binding TargetDir, UpdateSourceTrigger=PropertyChanged}"
+                                 Text="{Binding TargetDir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  TextWrapping="WrapWithOverflow">
 
                         </TextBox>
@@ -142,7 +145,8 @@
                                         Height="26"
                                         Margin="5 0"
                                         Background="{StaticResource PrimaryDarkBrush200}"
-                                        Foreground="{StaticResource PrimaryAccentBrush}"/>
+                                        Foreground="{StaticResource PrimaryAccentBrush}"
+                                        Text="{Binding ImgHeight, UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>
                         <StackPanel Orientation="Vertical">
                             <TextBlock Text="Width"
@@ -155,12 +159,37 @@
                                         Height="26"
                                         Margin="5 0"
                                         Background="{StaticResource PrimaryDarkBrush200}"
-                                        Foreground="{StaticResource PrimaryAccentBrush}"/>
+                                        Foreground="{StaticResource PrimaryAccentBrush}"
+                                        Text="{Binding ImgWidth, UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>
+                        
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
                         <CheckBox Content="Keep Aspect Ratio"
                               Style="{StaticResource MaterialDesignDarkCheckBox}"
                               Foreground="{StaticResource PrimaryAccentBrush}"
-                              Margin="10 6 0 0"/>
+                              Margin="10 6"
+                              IsChecked="{Binding SetRatio}"/>
+                        <CheckBox Content="Open Target Folder On Completion"
+                              Style="{StaticResource MaterialDesignDarkCheckBox}"
+                              Foreground="{StaticResource PrimaryAccentBrush}"
+                              Margin="10 6"
+                              IsChecked="{Binding OpenDirOnCompletion}"/>
+                        <StackPanel Orientation="Horizontal"
+                                    Visibility="{Binding ShowErrorMessage, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolToVisibilityConverter}}"
+                                    HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding ErrorMessage, UpdateSourceTrigger=PropertyChanged}"
+                                   Foreground="{StaticResource ErrorMessageBrush}"
+                                   FontSize="16"
+                                   HorizontalAlignment="Center"/>
+                            <Button Content="X"
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    Foreground="{StaticResource PrimaryDarkBrush500}"
+                                    Command="{Binding CloseErrorMessageCommand}"
+                                    Margin="10 -2 0 0"/>
+                        </StackPanel>
+                        
                     </StackPanel>
                     <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Right"
@@ -172,7 +201,8 @@
                                 ToolTip="Clear Inputs"
                                 ToolTipService.HasDropShadow="True"
                                 ToolTipService.InitialShowDelay="500"
-                                ToolTipService.Placement="Top">
+                                ToolTipService.Placement="Top"
+                                Command="{Binding ClearInputCommand}">
                             <Button.Effect>
                                 <DropShadowEffect BlurRadius="8"
                                                   ShadowDepth="3"
@@ -196,7 +226,8 @@
                                 ToolTipService.HasDropShadow="True"
                                 ToolTipService.InitialShowDelay="500"
                                 ToolTipService.Placement="Top"
-                                IsEnabled="{Binding CanResize}">
+                                IsEnabled="{Binding CanResize}"
+                                Command="{Binding ResizeCommand}">
                             <Button.Effect>
                                 <DropShadowEffect BlurRadius="8"
                                                   ShadowDepth="3"

@@ -9,6 +9,7 @@ using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace ImageUtility.ViewModels
 {
@@ -19,8 +20,7 @@ namespace ImageUtility.ViewModels
         public ICommand TargetDirCommand { get; set;}
         public ICommand ResizeCommand { get; set;}
         public ICommand ClearInputCommand { get; set; }
-
-
+        public ICommand CloseErrorMessageCommand { get; set; }
 
         private ObservableCollection<string> _imgList;
         public ObservableCollection<string> ImgList
@@ -57,14 +57,98 @@ namespace ImageUtility.ViewModels
             set => OnPropertyChanged(ref _targetDir, value);
         }
 
+        private double _imgHeight;
+        public double ImgHeight
+        {
+            get => _imgHeight;
+            set => OnPropertyChanged(ref _imgHeight, value);
+        }
+
+        private double _imgWidth;
+        public double ImgWidth
+        {
+            get => _imgWidth;
+            set
+            {
+                OnPropertyChanged(ref _imgWidth, value);
+                if (SourceDir is not null || TargetDir is not null)
+                    CanResize = true;
+            }
+        }
+
+        private string _errorMessage;
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            set => OnPropertyChanged(ref _errorMessage, value);
+        }
+
+        private bool _showErrorMessage;
+        public bool ShowErrorMessage
+        {
+            get => _showErrorMessage;
+            set => OnPropertyChanged(ref _showErrorMessage, value);
+        }
+
+        private bool _setRatio;
+        public bool SetRatio
+        {
+            get => _setRatio;
+            set => OnPropertyChanged(ref _setRatio, value);
+        }
+
+        private bool _openDirOnCompetion;
+        public bool OpenDirOnCompletion
+        {
+            get => _openDirOnCompetion;
+            set => OnPropertyChanged(ref _openDirOnCompetion, value);
+        }
+
         public ResizeViewModel(IMessageService messageService)
         {
             _messageService = messageService;
             SourceDirCommand = new RelayCommand(SetSourceDir);
             TargetDirCommand = new RelayCommand(SetTargetDir);
-            
+            ClearInputCommand = new RelayCommand(ClearInputs);
+            ResizeCommand = new RelayCommand(DoResize);
+            CloseErrorMessageCommand = new RelayCommand(CloseErrorMessage);
+
+
         }
 
+        private void CloseErrorMessage()
+        {
+            ErrorMessage = "";
+            ShowErrorMessage = false;
+        }
+
+        private void DoResize()
+        {
+            if (SourceDir is not null && SourceDir != ""
+                && TargetDir is not null && TargetDir != ""
+                    && ImgWidth > 0 && ImgHeight > 0)
+            {
+
+            }
+            else
+            {
+                ErrorMessage = "All Fields Are Required!";
+                ShowErrorMessage = true;
+            }
+               
+        }
+
+        private void ClearInputs()
+        {
+            SourceDir = "";
+            TargetDir = "";
+            ImgWidth = 0;
+            ImgHeight = 0;
+            SetRatio = false;
+            OpenDirOnCompletion = false;
+            if (ImgList != null)
+                ImgList.Clear();
+        }
 
         private void SetTargetDir()
         {
@@ -108,6 +192,26 @@ namespace ImageUtility.ViewModels
                 }
             }
            
+        }
+
+        private async Task<bool> Resize(List<string> imgList, int newWidth, int newHeight, bool keepRatio, bool openTargetDir)
+        {
+            if (imgList == null)
+                return await Task.FromResult(false);
+
+            foreach (var path in imgList)
+            {
+                var image = new BitmapImage(new Uri(path));
+                var oldHeight = image.Height;
+                var oldWidth= image.Width;
+
+                if (keepRatio)
+                {
+
+                }
+            }
+
+            return await Task.FromResult(false);
         }
     }
 }

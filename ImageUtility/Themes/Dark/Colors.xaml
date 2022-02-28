@@ -18,6 +18,7 @@
     <Color x:Key="SecondaryOrange">#C68308</Color>
     <Color x:Key="PrimaryYellow">#E2E700</Color>
     <Color x:Key="SecondaryYellow">#A5A800</Color>
+    <Color x:Key="ErrorMessage">#ff0000</Color>
 
     <!--  Brushes  -->
     <SolidColorBrush x:Key="PrimaryDarkBrush100" Color="{StaticResource PrimaryDark100}" />
@@ -43,6 +44,7 @@
     <SolidColorBrush x:Key="SecondaryYellowBrush" Color="{StaticResource SecondaryYellow}" />
 
     <SolidColorBrush x:Key="PrimaryAccentBrush" Color="{StaticResource PrimaryAccent}" />
+    <SolidColorBrush x:Key="ErrorMessageBrush" Color="{StaticResource ErrorMessage}" />
 
     <!--  Gradient Brushes  -->
     <LinearGradientBrush x:Key="Primary100ToSecondary200GradientBrush" StartPoint="1, 0" EndPoint="1, 1">
