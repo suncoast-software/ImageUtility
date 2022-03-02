@@ -45,7 +45,7 @@
             <!--#region  RESIZE CONTROLS -->
             <Border Grid.Column="1"
                     Grid.Row="1"
-                    Height="380"
+                    Height="420"
                     VerticalAlignment="Top"
                     BorderBrush="{StaticResource PrimaryDarkBrush500}"
                     BorderThickness=".5"
@@ -175,6 +175,20 @@
                               Foreground="{StaticResource PrimaryAccentBrush}"
                               Margin="10 6"
                               IsChecked="{Binding OpenDirOnCompletion}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="Save as JPEG"
+                                      Style="{StaticResource MaterialDesignDarkCheckBox}"
+                                      Margin="10 6"
+                                      FontSize="14"
+                                      Foreground="{StaticResource PrimaryAccentBrush}"
+                                      IsChecked="{Binding SaveAsJpg, UpdateSourceTrigger=PropertyChanged}"/>
+                            <CheckBox Content="Save As PNG"
+                                      Style="{StaticResource MaterialDesignDarkCheckBox}"
+                                      Margin="10 6"
+                                      FontSize="14"
+                                      Foreground="{StaticResource PrimaryAccentBrush}"
+                                      IsChecked="{Binding SaveAsPng, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
                         <StackPanel Orientation="Horizontal"
                                     Visibility="{Binding ShowErrorMessage, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolToVisibilityConverter}}"
                                     HorizontalAlignment="Center">
@@ -187,7 +201,7 @@
                                     BorderBrush="Transparent"
                                     Foreground="{StaticResource PrimaryDarkBrush500}"
                                     Command="{Binding CloseErrorMessageCommand}"
-                                    Margin="10 -2 0 0"/>
+                                    Margin="10 -6 0 0"/>
                         </StackPanel>
                         
                     </StackPanel>
@@ -251,7 +265,11 @@
             <!--#endregion-->
             <spinner:LoadingSpinner Grid.Column="2"
                                     Grid.Row="1"
-                                    IsLoading="{Binding IsLoading}"/>
+                                    IsLoading="{Binding IsLoading}"
+                                    Panel.ZIndex="100"
+                                    Color="{StaticResource PrimaryDarkBrush500}"
+                                    Thickness="8"
+                                    Diameter="240"/>
 
             <!--#region IMAGES-->
             <ScrollViewer Grid.Column="2"

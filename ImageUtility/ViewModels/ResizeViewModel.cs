@@ -1,12 +1,18 @@
 ﻿using ImageUtility.Interfaces;
 using ImageUtility.Utility.Commands;
 using Ookii.Dialogs.Wpf;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.ColorSpaces;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -16,6 +22,7 @@ namespace ImageUtility.ViewModels
     internal class ResizeViewModel: BaseViewModel
     {
         private IMessageService _messageService;
+        private ProgressDialog _progressDialog;
         public ICommand SourceDirCommand { get; set; }
         public ICommand TargetDirCommand { get; set;}
         public ICommand ResizeCommand { get; set;}
@@ -57,15 +64,15 @@ namespace ImageUtility.ViewModels
             set => OnPropertyChanged(ref _targetDir, value);
         }
 
-        private double _imgHeight;
-        public double ImgHeight
+        private int _imgHeight;
+        public int ImgHeight
         {
             get => _imgHeight;
             set => OnPropertyChanged(ref _imgHeight, value);
         }
 
-        private double _imgWidth;
-        public double ImgWidth
+        private int _imgWidth;
+        public int ImgWidth
         {
             get => _imgWidth;
             set
@@ -104,6 +111,20 @@ namespace ImageUtility.ViewModels
             set => OnPropertyChanged(ref _openDirOnCompetion, value);
         }
 
+        private bool _saveAsPng;
+        public bool SaveAsPng
+        {
+            get => _saveAsPng;
+            set => OnPropertyChanged(ref _saveAsPng, value);
+        }
+
+        private bool _saveAsJpg;
+        public bool SaveAsJpg
+        {
+            get => _saveAsJpg;
+            set => OnPropertyChanged(ref _saveAsJpg, value);
+        }
+
         public ResizeViewModel(IMessageService messageService)
         {
             _messageService = messageService;
@@ -128,7 +149,18 @@ namespace ImageUtility.ViewModels
                 && TargetDir is not null && TargetDir != ""
                     && ImgWidth > 0 && ImgHeight > 0)
             {
+                Task.Run(async () =>
+                {
+                    List<string> convertedList = new List<string>();
+                    foreach (var item in ImgList)
+                    {
+                        convertedList.Add(item);
+                    }
 
+                    await Resize(convertedList, ImgWidth, ImgHeight, SetRatio, OpenDirOnCompletion);
+                    if (OpenDirOnCompletion is true)
+                        Process.Start("explorer.exe", TargetDir);
+                });
             }
             else
             {
@@ -146,38 +178,42 @@ namespace ImageUtility.ViewModels
             ImgHeight = 0;
             SetRatio = false;
             OpenDirOnCompletion = false;
-            if (ImgList != null)
+
+            if(ImgList != null)
                 ImgList.Clear();
         }
 
         private void SetTargetDir()
         {
             var OFD = new VistaFolderBrowserDialog();
+            OFD.ShowNewFolderButton = true;
+
             if (!VistaFolderBrowserDialog.IsVistaFolderDialogSupported)
                 return;
 
-            if ((bool)OFD.ShowDialog() == true)
+            if ((bool?)OFD.ShowDialog() == true)
             {
                 TargetDir = OFD.SelectedPath;
             }
         }
 
         private void SetSourceDir()
-        {  
+        {
             Task.Run(async () =>
             {
                 IsLoading = true;
                 await Task.WhenAll(LoadImages()).ContinueWith(t => IsLoading = false);
+              
             });
         }
 
-        private async Task LoadImages()
+        private Task LoadImages()
         { 
             var OFD = new VistaFolderBrowserDialog();
             if (!VistaFolderBrowserDialog.IsVistaFolderDialogSupported)
-                return;
+                return Task.CompletedTask;
 
-            if ((bool)OFD.ShowDialog() == true)
+            if ((bool?)OFD.ShowDialog() == true)
             {
                 var selectedPath = OFD.SelectedPath;
                 SourceDir = selectedPath;
@@ -185,13 +221,13 @@ namespace ImageUtility.ViewModels
                 ImgList = new ObservableCollection<string>();
                 var files = Directory.GetFiles(SourceDir);
                 //int i = 0;
-                
+                   
                 for (int i = 0; i <= files.Length - 1; i++)
                 {
                     ImgList.Add(files[i]);
-                }
+                }   
             }
-           
+            return Task.CompletedTask;
         }
 
         private async Task<bool> Resize(List<string> imgList, int newWidth, int newHeight, bool keepRatio, bool openTargetDir)
@@ -199,19 +235,62 @@ namespace ImageUtility.ViewModels
             if (imgList == null)
                 return await Task.FromResult(false);
 
-            foreach (var path in imgList)
+            if (keepRatio)
             {
-                var image = new BitmapImage(new Uri(path));
-                var oldHeight = image.Height;
-                var oldWidth= image.Width;
-
-                if (keepRatio)
+                IsLoading = true;
+                foreach (var path in imgList)
                 {
+                    using (var image = Image.Load(path))
+                    {
+                        var img = image.CloneAs<Argb32>();
+                        var index = path.LastIndexOf('\\');
+                        var extIndex = path.LastIndexOf('.');
+                        var ext = path.Substring(extIndex + 1);
+                        var fName = path.Substring(index + 1).Replace(ext, string.Empty);
 
+                        img.Mutate(x => x.Resize(new ResizeOptions()
+                        {
+                            Mode = ResizeMode.Max,
+                            Size = new Size(newWidth, newHeight),
+                        }));
+
+                        if (SaveAsJpg)
+                            img.SaveAsJpeg($"{TargetDir}\\{fName}.jpg");
+                        if (SaveAsPng)
+                            img.SaveAsJpeg($"{TargetDir}\\{fName}.png");
+                    }
                 }
+                
             }
+            else
+            {
+                IsLoading = true;
+                foreach (var path in imgList)
+                {
+                    using (var image = Image.Load(path))
+                    {
+                        var img = image.CloneAs<Argb32>();
+                        var index = path.LastIndexOf('\\');
+                        var extIndex = path.LastIndexOf('.');
+                        var ext = path.Substring(extIndex + 1);
+                        var fName = path.Substring(index + 1).Replace(ext, string.Empty);
 
-            return await Task.FromResult(false);
+                        img.Mutate(x => x.Resize(new ResizeOptions()
+                        {
+                            Mode = ResizeMode.Manual,
+                            Size = new Size(newWidth, newHeight),
+                        }));
+
+                        if (SaveAsJpg)
+                            img.SaveAsJpeg($"{TargetDir}\\{fName}.jpg");
+                        if (SaveAsPng)
+                            img.SaveAsJpeg($"{TargetDir}\\{fName}.png");
+                    }
+                }
+
+            }
+            IsLoading = false;
+            return await Task.FromResult(true);
         }
     }
 }
